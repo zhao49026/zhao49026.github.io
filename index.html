@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金融分期政策调整后&nbsp;&nbsp;终端合约销量专项日度监控</title>
+<style>
+/* ===== Reset & Base ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  background:#0a0e27;
+  color:#e0e6f0;
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+}
+body::before{
+  content:'';
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:
+    radial-gradient(ellipse at 20% 0%,rgba(76,0,255,0.15),transparent 50%),
+    radial-gradient(ellipse at 80% 100%,rgba(0,200,255,0.1),transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(120,0,255,0.05),transparent 70%);
+  z-index:0;
+  pointer-events:none;
+}
+body::after{
+  content:'';
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:50px 50px;
+  z-index:0;
+  pointer-events:none;
+}
+.app{position:relative;z-index:1;min-height:100vh}
+
+/* ===== Header ===== */
+.container{max-width:1400px;margin:0 auto;padding:2rem 1.5rem}
+.header{text-align:center;padding:2rem 0 1.5rem}
+.header h1{
+  font-size:2.3rem;
+  font-weight:700;
+  background:linear-gradient(135deg,#00d4ff,#7c4dff,#00d4ff);
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:shimmer 3s linear infinite;
+  letter-spacing:2px;
+  line-height:1.35;
+}
+@keyframes shimmer{to{background-position:200% center}}
+.header .subtitle{
+  font-size:0.85rem;
+  color:rgba(160,180,220,0.6);
+  letter-spacing:4px;
+  margin-top:0.5rem;
+  text-transform:uppercase;
+}
+.header .divider{
+  width:120px;
+  height:2px;
+  margin:1.2rem auto 0;
+  background:linear-gradient(90deg,transparent,#4c8eff,transparent);
+}
+.header .data-date{
+  font-size:0.8rem;
+  color:rgba(160,180,220,0.5);
+  margin-top:0.75rem;
+}
+
+/* ===== Metric Boxes ===== */
+.metrics-row{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1rem;
+  margin-bottom:1.5rem;
+}
+.metric-box{
+  background:linear-gradient(135deg,rgba(28,40,80,0.9),rgba(15,22,50,0.95));
+  border:1px solid rgba(76,132,255,0.4);
+  border-radius:12px;
+  padding:1.25rem;
+  box-shadow:0 6px 20px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
+  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.metric-box:hover{
+  transform:translateY(-3px);
+  border-color:rgba(76,132,255,0.6);
+  box-shadow:0 10px 26px rgba(0,0,0,0.5), 0 0 20px rgba(76,132,255,0.12);
+}
+.metric-box .label{font-size:0.78rem;color:rgba(160,180,220,0.6);margin-bottom:0.5rem}
+.metric-box .value{font-size:1.7rem;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+.metric-box .unit{font-size:0.85rem;color:rgba(160,180,220,0.5);font-weight:400;margin-left:4px}
+.metric-box .change{font-size:0.8rem;margin-top:0.35rem}
+
+/* ===== Panels ===== */
+.panel{
+  background:linear-gradient(135deg,rgba(28,40,80,0.92),rgba(15,22,50,0.96));
+  border:1px solid rgba(76,132,255,0.45);
+  border-radius:16px;
+  padding:1.5rem;
+  margin-bottom:1.5rem;
+  box-shadow:0 10px 28px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+  backdrop-filter:blur(10px);
+  position:relative;
+  overflow:hidden;
+}
+.panel::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg,var(--panel-color,#00d4ff),transparent);
+}
+.panel-chart{--panel-color:#00d4ff}
+.panel-table{--panel-color:#7c4dff}
+.panel-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:0.75rem;
+  margin-bottom:1.25rem;
+}
+.panel-header h3{font-size:1.1rem;font-weight:600;color:#e0e6f0}
+.panel-header h3 .en{font-size:0.7rem;color:rgba(160,180,220,0.5);letter-spacing:1px;margin-left:0.5rem;text-transform:uppercase}
+.panel-tag{font-size:0.72rem;color:rgba(160,180,220,0.45)}
+.panel-actions{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap}
+.mini-btn{
+  padding:0.42rem 0.95rem;
+  background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(124,77,255,0.12));
+  border:1px solid rgba(0,212,255,0.5);
+  border-radius:8px;
+  color:#7ee3ff;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all .15s;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+.mini-btn:hover{border-color:#00d4ff;color:#fff;box-shadow:0 0 14px rgba(0,212,255,0.3)}
+
+/* ===== Chart ===== */
+.chart-wrap{width:100%;overflow-x:auto}
+.chart-svg{width:100%;height:auto;display:block;min-width:620px}
+.axis-label{font-size:11px;fill:rgba(160,180,220,0.55)}
+.grid-line{stroke:rgba(255,255,255,0.05);stroke-width:1}
+.axis-line{stroke:rgba(76,132,255,0.25);stroke-width:1}
+.line-nat{fill:none;stroke:#00d4ff;stroke-width:3;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 0 7px rgba(0,212,255,0.45))}
+.trend-area{fill:url(#areaGrad);opacity:0.55}
+.dot-nat{fill:#0a0e27;stroke:#00d4ff;stroke-width:2}
+.dot-nat.last{fill:#00d4ff;stroke:#fff}
+.dot-label{font-size:12px;font-weight:700;fill:#00d4ff;font-variant-numeric:tabular-nums}
+.line-tag{font-size:11px;font-weight:700;fill:#fff;paint-order:stroke;stroke:#0a0e27;stroke-width:3px;stroke-linejoin:round}
+.chart-sub{font-size:0.78rem;font-weight:600;color:rgba(160,190,235,0.7);letter-spacing:1px;margin:0.6rem 0 0.2rem}
+.chart-hint{
+  margin:0.2rem 0 0.9rem;
+  padding:0.55rem 1rem;
+  text-align:center;
+  font-size:0.83rem;font-weight:600;color:#aee9ff;letter-spacing:0.5px;
+  background:linear-gradient(90deg,rgba(0,212,255,0.14),rgba(124,77,255,0.14));
+  border:1px solid rgba(0,212,255,0.45);
+  border-radius:10px;
+  box-shadow:0 0 14px rgba(0,212,255,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.chart-note{font-size:0.75rem;color:rgba(160,180,220,0.45);margin-top:0.8rem}
+
+/* ===== Mini Chart Grid (31省小图) ===== */
+.mini-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1rem;
+  margin-top:0.4rem;
+}
+.mini-card{
+  background:linear-gradient(135deg,rgba(28,40,80,0.82),rgba(15,22,50,0.92));
+  border:1px solid rgba(76,132,255,0.32);
+  border-radius:12px;
+  padding:0.8rem 0.9rem 0.55rem;
+  transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 4px 14px rgba(0,0,0,0.32);
+  min-width:0;
+}
+.mini-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(0,212,255,0.6);
+  box-shadow:0 8px 20px rgba(0,0,0,0.42),0 0 16px rgba(0,212,255,0.12);
+}
+.mini-head{display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem;margin-bottom:0.2rem}
+.mini-name{font-size:0.88rem;font-weight:600;color:#cfe0ff;white-space:nowrap}
+.mini-val{font-size:1.08rem;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mini-delta{font-size:0.72rem;font-variant-numeric:tabular-nums;white-space:nowrap;margin-left:0.35rem}
+.mini-slope{
+  display:inline-block;
+  font-size:0.68rem;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;
+  margin-left:0.45rem;padding:1px 7px;border-radius:20px;
+  border:1px solid;
+}
+.mini-slope.up{color:#ff8a80;border-color:rgba(255,82,82,0.55);background:rgba(255,82,82,0.10)}
+.mini-slope.down{color:#69f0ae;border-color:rgba(105,240,174,0.5);background:rgba(105,240,174,0.08)}
+.mini-svg{width:100%;height:auto;display:block}
+.mini-lab{
+  font-size:9.2px;font-weight:600;fill:#bfe9ff;
+  font-variant-numeric:tabular-nums;
+  paint-order:stroke;stroke:#0a0e27;stroke-width:2.6px;stroke-linejoin:round;
+}
+.mini-date{
+  font-size:7.5px;fill:rgba(160,180,220,0.5);
+  font-variant-numeric:tabular-nums;
+}
+
+/* ===== Table (矩阵横向滚动) ===== */
+.table-wrapper{
+  background:rgba(15,22,45,0.5);
+  border:1px solid rgba(76,132,255,0.25);
+  border-radius:12px;
+  overflow:hidden;
+}
+.table-scroll{overflow-x:auto;max-height:640px;overflow-y:auto;cursor:grab}
+.table-scroll.dragging{cursor:grabbing;user-select:none}
+table{border-collapse:separate;border-spacing:0;font-size:0.85rem}
+thead th{
+  position:sticky;top:0;z-index:12;
+  background:rgba(15,22,45,0.97);
+  padding:0.8rem 1.1rem;
+  text-align:center;
+  font-weight:600;
+  color:rgba(160,180,220,0.85);
+  white-space:nowrap;
+  border-bottom:1px solid rgba(76,132,255,0.3);
+  min-width:104px;
+}
+thead th:first-child{min-width:86px;left:0;z-index:15;background:rgba(15,22,45,0.99)}
+tbody tr{transition:background 0.15s}
+tbody tr:hover td{background:rgba(76,132,255,0.07)}
+tbody td{
+  padding:0.62rem 1.1rem;
+  color:rgba(220,230,240,0.9);
+  white-space:nowrap;
+  text-align:center;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  font-variant-numeric:tabular-nums;
+  min-width:104px;
+}
+tbody td.prov{
+  position:sticky;left:0;z-index:10;
+  background:rgba(14,20,42,0.98);
+  font-weight:600;color:rgba(220,232,250,0.95);
+  min-width:86px;
+  box-shadow:8px 0 12px -6px rgba(0,0,0,0.55);
+}
+tr.national-row td{background:linear-gradient(90deg,rgba(0,212,255,0.13),rgba(124,77,255,0.08))!important}
+tr.national-row td.prov{color:#00d4ff;background:linear-gradient(90deg,rgba(22,38,70,1),rgba(16,24,50,1))!important}
+tr.national-row td{font-weight:700;color:#fff}
+tbody tr.top-3 td:not(.prov){color:rgba(255,235,190,0.95)}
+tbody tr.top-3 td.prov::after{content:'';display:inline-block;width:7px;height:7px;border-radius:50%;margin-left:6px;vertical-align:middle}
+tbody tr.top-1 td.prov::after{background:#FFD700}
+tbody tr.top-2 td.prov::after{background:#C0C0C0}
+tbody tr.top-3 td.prov::after{background:#CD7F32}
+td.hot{color:#ffd54f;font-weight:700}
+td.dim{color:rgba(160,180,220,0.35)}
+.up{color:#ff5252}
+.down{color:#69f0ae}
+.neutral{color:rgba(160,180,220,0.6)}
+.scroll-hint{font-size:0.72rem;color:rgba(160,180,220,0.4);margin-top:0.6rem}
+
+/* ===== Footer ===== */
+.footer{
+  text-align:center;
+  padding:2rem 1rem;
+  font-size:0.75rem;
+  color:rgba(160,180,220,0.3);
+}
+
+/* ===== Responsive ===== */
+@media(max-width:1100px){
+  .mini-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .header h1{font-size:1.45rem}
+  .header .subtitle{font-size:0.66rem;letter-spacing:2px}
+  .metrics-row{grid-template-columns:repeat(2,1fr)}
+  .metric-box .value{font-size:1.3rem}
+  .panel{padding:1rem}
+  .mini-grid{grid-template-columns:1fr}
+  table{font-size:0.78rem}
+  thead th,tbody td{padding:0.5rem 0.7rem;min-width:82px}
+  .container{padding:1rem 0.75rem}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>金融分期政策调整后&nbsp;&nbsp;终端合约销量专项日度监控</h1>
+    <div class="subtitle">DAILY MONITORING OF TERMINAL CONTRACT SALES</div>
+    <div class="divider"></div>
+    <div class="data-date" id="data-date"></div>
+  </div>
+
+  <!-- Metrics Strip -->
+  <div class="metrics-row" id="metrics-row"></div>
+
+  <!-- Trend Chart: 全国大图 + 31省小图网格 -->
+  <div class="panel panel-chart">
+    <div class="panel-header">
+      <h3>📈 终端合约销量趋势图<span class="en">TERMINAL CONTRACT SALES TREND</span></h3>
+      <span class="panel-tag">全国大图 + 31省独立小图 · 每点标注数值</span>
+    </div>
+    <div class="chart-wrap" id="chart-wrap"></div>
+    <div class="chart-note" id="chart-note"></div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="panel panel-table">
+    <div class="panel-header">
+      <h3>📊 各省当日新增销量<span class="en">PROVINCIAL DAILY NEW</span></h3>
+      <div class="panel-actions">
+        <button class="mini-btn" onclick="downloadXLSX()">⬇ 导出Excel</button>
+        <span class="panel-tag">行=省份（最新日降序）· 列=日期 · 可横向拖动</span>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <div class="table-scroll" id="table-scroll">
+        <table id="data-table"></table>
+      </div>
+    </div>
+    <div class="scroll-hint">← 左右拖动查看全部日期 · 全国行置顶 · 单位：笔 · 缺失显示 --</div>
+  </div>
+
+  <div class="footer">
+    金融分期政策调整后&nbsp;&nbsp;终端合约销量专项日度监控 · 单位：笔 · 生成时间：<span id="gen-time"></span>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ===== Embedded Data =====
+const D = {"meta":{"title":"金融分期政策调整后  终端合约销量专项日度监控","subtitle":"DAILY MONITORING OF TERMINAL CONTRACT SALES","generated_at":"2026-09-26 15:10:40","date_start":"2026-09-24","date_end":"2026-09-25","cutoff":{"2026-09-23":"2026-09-23","2026-09-24":"2026-09-24","2026-09-25":"2026-09-25"},"unit":"笔","province_count":31},"dates":["2026-09-23","2026-09-24","2026-09-25"],"provinces":["全国","北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","山东","河南","上海","江苏","云南","四川","宁夏","安徽","广东","广西","新疆","江西","浙江","海南","湖北","湖南","甘肃","福建","西藏","贵州","重庆","陕西","青海"],"cum":{"全国":[251674,267179,274350],"北京":[8629,8825,9092],"天津":[3224,3395,3527],"河北":[10872,11600,11784],"山西":[3647,3805,3842],"内蒙古":[9376,10053,10380],"辽宁":[19270,19785,20705],"吉林":[11935,12714,13348],"黑龙江":[6079,6494,6696],"山东":[44006,46408,46770],"河南":[23083,24416,24498],"上海":[13341,13811,14119],"江苏":[10754,11185,11394],"云南":[1966,2129,2162],"四川":[3561,3738,3738],"宁夏":[1514,1735,1798],"安徽":[2006,2142,2177],"广东":[19363,20503,22843],"广西":[2000,2132,2230],"新疆":[1548,1693,1829],"江西":[5783,6440,6497],"浙江":[4070,4317,4492],"海南":[1112,1167,1504],"湖北":[16603,18008,18033],"湖南":[17033,18383,18384],"甘肃":[587,620,653],"福建":[3840,4733,4824],"西藏":[38,38,39],"贵州":[1572,1693,1718],"重庆":[3011,3188,3213],"陕西":[1416,1558,1581],"青海":[435,471,480]},"new":{"全国":[null,15505,7171],"北京":[null,196,267],"天津":[null,171,132],"河北":[null,728,184],"山西":[null,158,37],"内蒙古":[null,677,327],"辽宁":[null,515,920],"吉林":[null,779,634],"黑龙江":[null,415,202],"山东":[null,2402,362],"河南":[null,1333,82],"上海":[null,470,308],"江苏":[null,431,209],"云南":[null,163,33],"四川":[null,177,0],"宁夏":[null,221,63],"安徽":[null,136,35],"广东":[null,1140,2340],"广西":[null,132,98],"新疆":[null,145,136],"江西":[null,657,57],"浙江":[null,247,175],"海南":[null,55,337],"湖北":[null,1405,25],"湖南":[null,1350,1],"甘肃":[null,33,33],"福建":[null,893,91],"西藏":[null,0,1],"贵州":[null,121,25],"重庆":[null,177,25],"陕西":[null,142,23],"青海":[null,36,9]}};
+
+// ===== Formatting =====
+function isNull(v){return v===null||v===undefined||(typeof v==='number'&&isNaN(v));}
+function fmtInt(v){if(isNull(v))return'--';return Math.round(v).toLocaleString('en-US');}
+
+// 展示用日期：跳过基期（全国new为null的日期）
+function visibleDates(){
+  const nat=D.new['全国'];
+  const out=[];
+  D.dates.forEach((d,i)=>{if(!isNull(nat[i]))out.push({date:d,idx:i});});
+  return out;
+}
+
+// 31省按最新有效日当日新增降序
+function sortedProvinces(){
+  const natArr=D.new['全国'];
+  let lastIdx=-1;
+  for(let i=D.dates.length-1;i>=0;i--){if(!isNull(natArr[i])){lastIdx=i;break;}}
+  const provs=D.provinces.filter(p=>p!=='全国');
+  provs.sort((a,b)=>{
+    const va=D.new[a][lastIdx], vb=D.new[b][lastIdx];
+    if(isNull(va)&&isNull(vb))return 0;
+    if(isNull(va))return 1;
+    if(isNull(vb))return -1;
+    return vb-va;
+  });
+  return {provs:provs,lastIdx:lastIdx};
+}
+
+// ===== Metrics Strip =====
+function renderMetrics(){
+  const dates=D.dates, nat=D.new['全国'];
+  const n=dates.length;
+  const latest=nat[n-1];
+  const prev=n>=2?nat[n-2]:null;
+  const diff=(!isNull(latest)&&!isNull(prev))?latest-prev:null;
+  let periodSum=0, dayCount=0;
+  nat.forEach(v=>{if(!isNull(v)){periodSum+=v;dayCount++;}});
+  const seen=visibleDates().map(o=>o.date);
+  const firstShow=seen[0]||'', lastShow=seen[seen.length-1]||'';
+
+  let diffHtml;
+  if(isNull(diff))diffHtml='<span class="neutral">--</span>';
+  else if(diff>0)diffHtml='<span class="up">▲ +'+fmtInt(diff)+'</span>';
+  else if(diff<0)diffHtml='<span class="down">▼ '+fmtInt(diff)+'</span>';
+  else diffHtml='<span class="neutral">— 0</span>';
+
+  document.getElementById('metrics-row').innerHTML=
+    '<div class="metric-box"><div class="label">最新当日新增（全国）</div>'+
+    '<div class="value">'+fmtInt(latest)+'<span class="unit">笔</span></div>'+
+    '<div class="change neutral">'+lastShow+'</div></div>'+
+    '<div class="metric-box"><div class="label">较前日增减</div>'+
+    '<div class="value">'+diffHtml+'</div>'+
+    '<div class="change neutral">当日新增较前一日变化</div></div>'+
+    '<div class="metric-box"><div class="label">跟踪期累计新增（全国）</div>'+
+    '<div class="value">'+fmtInt(periodSum)+'<span class="unit">笔</span></div>'+
+    '<div class="change neutral">'+firstShow+' ~ '+lastShow+'</div></div>'+
+    '<div class="metric-box"><div class="label">跟踪天数</div>'+
+    '<div class="value">'+dayCount+'<span class="unit">天</span></div>'+
+    '<div class="change neutral">有效数据日数</div></div>';
+
+  const cut=D.meta.cutoff||{};
+  const lastCut=cut[dates[n-1]]||dates[n-1];
+  document.getElementById('data-date').textContent=
+    '跟踪区间：'+D.meta.date_start+' ～ '+D.meta.date_end+' ｜ 最新数据截止：'+lastCut+' ｜ 单位：'+D.meta.unit;
+  document.getElementById('gen-time').textContent=D.meta.generated_at;
+}
+
+// ===== Trend Charts =====
+// niceTicks 1/2/2.5/5/10 档位
+function niceTicks(maxV,count){
+  if(!maxV||maxV<=0)maxV=1;
+  count=count||5;
+  const raw=maxV/(count-1);
+  const mag=Math.pow(10,Math.floor(Math.log10(raw)));
+  const norm=raw/mag;
+  let step;
+  if(norm<=1)step=1;else if(norm<=2)step=2;else if(norm<=2.5)step=2.5;else if(norm<=5)step=5;else step=10;
+  step*=mag;
+  return {step:step,max:Math.ceil(maxV/step)*step};
+}
+
+function drawFrame(W,H,PL,PR,PT,PB,t,vis,x){
+  let s='';
+  for(let k=0;k*t.step<=t.max+1e-6;k++){
+    const gv=Math.round(k*t.step*100)/100;
+    const gy=PT+(H-PT-PB)*(1-gv/t.max);
+    s+='<line class="grid-line" x1="'+PL+'" y1="'+gy.toFixed(1)+'" x2="'+(W-PR)+'" y2="'+gy.toFixed(1)+'"/>';
+    s+='<text class="axis-label" x="'+(PL-8)+'" y="'+(gy+4).toFixed(1)+'" text-anchor="end">'+fmtInt(gv)+'</text>';
+  }
+  s+='<line class="axis-line" x1="'+PL+'" y1="'+PT+'" x2="'+PL+'" y2="'+(H-PB)+'"/>';
+  s+='<line class="axis-line" x1="'+PL+'" y1="'+(H-PB)+'" x2="'+(W-PR)+'" y2="'+(H-PB)+'"/>';
+  vis.forEach((o,i)=>{
+    s+='<text class="axis-label" x="'+x(i).toFixed(1)+'" y="'+(H-PB+20)+'" text-anchor="middle">'+o.date.slice(5)+'</text>';
+  });
+  return s;
+}
+
+// 全国大图
+function natChart(vis){
+  const nat=D.new['全国'];
+  const N=vis.length;
+  let natMax=0;
+  vis.forEach(o=>{const v=nat[o.idx];if(!isNull(v)&&v>natMax)natMax=v;});
+  const tn=niceTicks(natMax,7);
+  const W=980,H=300,PL=70,PR=110,PT=30,PB=42;
+  const iw=W-PL-PR, ih=H-PT-PB;
+  const yMax=tn.max;
+  const x=i=>PL+(N>1?i/(N-1):0.5)*iw;
+  const y=v=>PT+ih*(1-v/yMax);
+
+  let svg='<svg class="chart-svg" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">';
+  svg+='<defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">'+
+       '<stop offset="0%" stop-color="#00d4ff" stop-opacity="0.30"/>'+
+       '<stop offset="100%" stop-color="#00d4ff" stop-opacity="0.01"/></linearGradient></defs>';
+  svg+=drawFrame(W,H,PL,PR,PT,PB,tn,vis,x);
+
+  const pts=[];
+  vis.forEach((o,i)=>{const v=nat[o.idx];if(!isNull(v))pts.push({x:x(i),y:y(v),v:v,d:o.date});});
+  if(pts.length>0){
+    const nArea='M'+pts[0].x.toFixed(1)+','+(PT+ih)+' '+
+      pts.map(p=>'L'+p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ')+
+      ' L'+pts[pts.length-1].x.toFixed(1)+','+(PT+ih)+' Z';
+    const nLine=pts.map((p,k)=>(k===0?'M':'L')+p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');
+    svg+='<path class="trend-area" d="'+nArea+'"/>';
+    svg+='<path class="line-nat" d="'+nLine+'"><title>全国</title></path>';
+    pts.forEach((p,k)=>{
+      const last=k===pts.length-1;
+      svg+='<circle class="dot-nat'+(last?' last':'')+'" cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+(last?5:3.5)+'">'+
+           '<title>'+p.d+' 全国: '+fmtInt(p.v)+' 笔</title></circle>';
+      svg+='<text class="dot-label" x="'+p.x.toFixed(1)+'" y="'+(p.y-9).toFixed(1)+'" text-anchor="middle">'+fmtInt(p.v)+'</text>';
+    });
+    const lp=pts[pts.length-1];
+    svg+='<text class="line-tag" fill="#00d4ff" x="'+(lp.x+12).toFixed(1)+'" y="'+(lp.y+4).toFixed(1)+'">全国</text>';
+  }
+  svg+='</svg>';
+  return svg;
+}
+
+// 最小二乘直线拟合：y = a + bx，x=日期序号(0..N-1)
+// 返回 {a, b, n}；有效点<2 时返回 null
+function linFit(pts){
+  const xs=pts.map(q=>q.xi), ys=pts.map(q=>q.v);
+  const n=xs.length;
+  if(n<2)return null;
+  const mx=xs.reduce((s,v)=>s+v,0)/n, my=ys.reduce((s,v)=>s+v,0)/n;
+  let num=0, den=0;
+  for(let k=0;k<n;k++){num+=(xs[k]-mx)*(ys[k]-my);den+=(xs[k]-mx)*(xs[k]-mx);}
+  if(den===0)return null;
+  const b=num/den, a=my-b*mx;
+  return {a:a,b:b,n:n};
+}
+
+// 单省迷你图（X轴显示日期；谷底标签强制置顶；边缘标签防裁剪；直线拟合趋势线）
+function miniChart(p,vis){
+  const MW=300,MH=118,PT=16,PL=6,PR=6,AXIS_Y=94,DATE_Y=107;
+  const iw=MW-PL-PR, ih=AXIS_Y-PT;
+  const N=vis.length;
+  const pts=[];
+  vis.forEach((o,i)=>{
+    const v=D.new[p]?D.new[p][o.idx]:null;
+    pts.push({x:PL+(N>1?i/(N-1):0.5)*iw,v:v,d:o.date,ok:!isNull(v),xi:i});
+  });
+  const ok=pts.filter(q=>q.ok);
+  if(!ok.length)return '';
+  let vmin=Infinity,vmax=-Infinity;
+  ok.forEach(q=>{if(q.v<vmin)vmin=q.v;if(q.v>vmax)vmax=q.v;});
+  // 先算拟合，把拟合线端点纳入缩放域，防止爬坡型省份拟合线超出绘图区
+  const fit=linFit(ok);
+  if(fit){
+    const fy0=fit.a+fit.b*ok[0].xi, fy1=fit.a+fit.b*ok[ok.length-1].xi;
+    if(fy0<vmin)vmin=fy0; if(fy1<vmin)vmin=fy1;
+    if(fy0>vmax)vmax=fy0; if(fy1>vmax)vmax=fy1;
+  }
+  const span=(vmax-vmin)||1;
+  ok.forEach(q=>{q.y=PT+ih*(1-(q.v-vmin)/span);});
+  const yMap=v=>PT+ih*(1-(v-vmin)/span);
+
+  const linePath=ok.map((q,k)=>(k===0?'M':'L')+q.x.toFixed(1)+','+q.y.toFixed(1)).join(' ');
+  let svg='<svg class="mini-svg" viewBox="0 0 '+MW+' '+MH+'" xmlns="http://www.w3.org/2000/svg">';
+  // X轴线
+  svg+='<line x1="'+PL+'" y1="'+AXIS_Y+'" x2="'+(MW-PR)+'" y2="'+AXIS_Y+'" stroke="rgba(76,132,255,0.2)" stroke-width="1"/>';
+  // 日期刻度：自动抽稀（最多8个），首尾必显
+  const step=Math.ceil(pts.length/8);
+  pts.forEach((q,i)=>{
+    if(i%step!==0&&i!==pts.length-1)return;
+    let anchor='middle', tx=q.x;
+    if(i===0){anchor='start';tx=PL;}
+    if(i===pts.length-1){anchor='end';tx=MW-PR;}
+    svg+='<text class="mini-date" x="'+tx.toFixed(1)+'" y="'+DATE_Y+'" text-anchor="'+anchor+'">'+q.d.slice(5)+'</text>';
+  });
+  // 直线拟合趋势线（虚线，红涨绿跌；画在数据折线之前垫底）
+  if(fit&&ok.length>=2){
+    const y0=yMap(fit.a+fit.b*ok[0].xi), y1=yMap(fit.a+fit.b*ok[ok.length-1].xi);
+    const fc=fit.b>0?'#ff5252':'#69f0ae';
+    svg+='<line x1="'+ok[0].x.toFixed(1)+'" y1="'+y0.toFixed(1)+'" x2="'+ok[ok.length-1].x.toFixed(1)+'" y2="'+y1.toFixed(1)+'"'+
+         ' stroke="'+fc+'" stroke-width="1.4" stroke-dasharray="5,4" opacity="0.85">'+
+         '<title>'+p+' 趋势斜率: '+(fit.b>=0?'+':'')+Math.round(fit.b).toLocaleString('en-US')+' 笔/日</title></line>';
+  }
+  // 折线
+  svg+='<path d="'+linePath+'" fill="none" stroke="#00d4ff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>';
+  // 数据点 + 数值标签
+  ok.forEach((q,k)=>{
+    svg+='<circle cx="'+q.x.toFixed(1)+'" cy="'+q.y.toFixed(1)+'" r="2" fill="#00d4ff">'+
+         '<title>'+p+' · '+q.d+': '+fmtInt(q.v)+' 笔</title></circle>';
+    // 标签默认上下交替；点太靠近X轴时强制放上方，避免被轴线裁掉
+    let up=(k%2===0);
+    if(q.y+13>AXIS_Y-2)up=true;
+    const ly=up?q.y-5:q.y+13;
+    // 首尾点标签贴边对齐，防左右裁剪
+    let anchor='middle', tx=q.x;
+    if(q.x<26){tx=q.x-2;anchor='start';}
+    else if(q.x>MW-26){tx=q.x+2;anchor='end';}
+    svg+='<text class="mini-lab" x="'+tx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="'+anchor+'">'+fmtInt(q.v)+'</text>';
+  });
+  svg+='</svg>';
+  return svg;
+}
+
+function renderChart(){
+  const vis=visibleDates();
+  const dg=sortedProvinces();
+  const provs=dg.provs;
+  const lastIdx=dg.lastIdx;
+  const nat=D.new['全国'];
+  const N=vis.length;
+
+  let html='<div class="chart-sub">▍全国（独立纵轴）</div>'+natChart(vis);
+  html+='<div class="chart-sub" style="margin-top:1.4rem">▍各省 · 31省独立小图（按最新日当日新增降序）</div>';
+  html+='<div class="chart-hint">💡 每格一个省：横轴为日期，曲线标注值为<b>当日新增销量（笔）</b> · 虚线为直线拟合趋势线（红↗向好 / 绿↘转弱） · 右上角为最新值、较前日增减与趋势斜率</div>';
+  html+='<div class="mini-grid">';
+
+  let prevIdx=lastIdx-1;
+  provs.forEach(p=>{
+    const cur=D.new[p]?D.new[p][lastIdx]:null;
+    const prev=(prevIdx>=0&&D.new[p])?D.new[p][prevIdx]:null;
+    const diff=(!isNull(cur)&&!isNull(prev))?cur-prev:null;
+    let dHtml;
+    if(isNull(diff))dHtml='<span class="neutral mini-delta">--</span>';
+    else if(diff>0)dHtml='<span class="up mini-delta">▲'+fmtInt(diff)+'</span>';
+    else if(diff<0)dHtml='<span class="down mini-delta">▼'+fmtInt(diff)+'</span>';
+    else dHtml='<span class="neutral mini-delta">—0</span>';
+    // 趋势斜率徽章（最小二乘拟合）
+    const okNotNull=[];
+    vis.forEach((o,xi)=>{const v=D.new[p]?D.new[p][o.idx]:null;if(!isNull(v))okNotNull.push({xi:xi,v:v});});
+    const fitP=linFit(okNotNull);
+    let sHtml='';
+    if(fitP){
+      const up2=fitP.b>0;
+      const sVal=(up2?'+':'-')+fmtInt(Math.abs(Math.round(fitP.b)));
+      sHtml='<span class="mini-slope '+(up2?'up':'down')+'" title="直线拟合趋势：'+(up2?'向好':'转弱')+'">'+(up2?'↗':'↘')+' '+sVal+'/日</span>';
+    }
+    html+='<div class="mini-card">'+
+      '<div class="mini-head">'+
+        '<span class="mini-name">'+p+'</span>'+
+        '<span><span class="mini-val">'+fmtInt(cur)+'</span>'+dHtml+sHtml+'</span>'+
+      '</div>'+
+      miniChart(p,vis)+
+    '</div>';
+  });
+  html+='</div>';
+  document.getElementById('chart-wrap').innerHTML=html;
+
+  if(N>0){
+    const lastO=vis[N-1], v=nat[lastO.idx];
+    document.getElementById('chart-note').textContent=
+      '全国 · 最新('+lastO.date+')当日新增 '+fmtInt(v)+' 笔 ｜ 31省各自独立小纵轴，互不影响可读性';
+  }else{
+    document.getElementById('chart-note').textContent='暂无有效数据';
+  }
+}
+
+// ===== Data Table: 省份 × 全日期 =====
+function renderTable(){
+  const vis=visibleDates();
+  const dg=sortedProvinces();
+  const provs=dg.provs;
+  const nat=D.new['全国'];
+
+  let html='<thead><tr><th>省份</th>';
+  vis.forEach(o=>{html+='<th>'+o.date.slice(5)+'</th>';});
+  html+='</tr></thead><tbody>';
+
+  html+='<tr class="national-row"><td class="prov">全国</td>';
+  vis.forEach(o=>{html+='<td>'+fmtInt(nat[o.idx])+'</td>';});
+  html+='</tr>';
+
+  function rowMax(p){
+    let mx=null;
+    vis.forEach(o=>{
+      const v=D.new[p]?D.new[p][o.idx]:null;
+      if(!isNull(v)&&(mx===null||v>mx))mx=v;
+    });
+    return mx;
+  }
+  provs.forEach((p,i)=>{
+    const cls=i===0?'top-3 top-1':i===1?'top-3 top-2':i===2?'top-3 top-3':'';
+    const mx=rowMax(p);
+    html+='<tr class="'+cls+'"><td class="prov">'+p+'</td>';
+    vis.forEach(o=>{
+      const v=D.new[p]?D.new[p][o.idx]:null;
+      let cc='';
+      if(isNull(v))cc='dim';
+      else if(mx!==null&&v===mx&&vis.length>1)cc='hot';
+      html+='<td class="'+cc+'">'+fmtInt(v)+'</td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  document.getElementById('data-table').innerHTML=html;
+
+  // 鼠标拖动横向滚动
+  const sc=document.getElementById('table-scroll');
+  let dragging=false,startX=0,startL=0;
+  sc.addEventListener('mousedown',e=>{
+    dragging=true;sc.classList.add('dragging');
+    startX=e.pageX;startL=sc.scrollLeft;
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove',e=>{
+    if(!dragging)return;
+    sc.scrollLeft=startL-(e.pageX-startX);
+  });
+  window.addEventListener('mouseup',()=>{
+    dragging=false;sc.classList.remove('dragging');
+  });
+}
+
+// ===== 导出 Excel（纯前端手写 xlsx，ZIP store 模式 + CRC32） =====
+const CRC_TABLE=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++){c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);}t[n]=c>>>0;}return t;})();
+function crc32(u8){let c=0xFFFFFFFF;for(let i=0;i<u8.length;i++){c=CRC_TABLE[(c^u8[i])&0xFF]^(c>>>8);}return (c^0xFFFFFFFF)>>>0;}
+
+function zipStore(entries){
+  const enc=new TextEncoder();
+  const chunks=[],central=[];
+  let off=0;
+  entries.forEach(e=>{
+    const name=enc.encode(e.name);
+    const data=e.data;
+    const crc=crc32(data);
+    const lh=new Uint8Array(30+name.length);
+    const dv=new DataView(lh.buffer);
+    dv.setUint32(0,0x04034b50,true);
+    dv.setUint16(4,20,true);
+    dv.setUint16(6,0x0800,true);
+    dv.setUint16(8,0,true);
+    dv.setUint16(10,0,true);
+    dv.setUint16(12,33,true);
+    dv.setUint32(14,crc,true);
+    dv.setUint32(18,data.length,true);
+    dv.setUint32(22,data.length,true);
+    dv.setUint16(26,name.length,true);
+    dv.setUint16(28,0,true);
+    lh.set(name,30);
+    chunks.push(lh,data);
+    const cd=new Uint8Array(46+name.length);
+    const dc=new DataView(cd.buffer);
+    dc.setUint32(0,0x02014b50,true);
+    dc.setUint16(4,20,true);
+    dc.setUint16(6,20,true);
+    dc.setUint16(8,0x0800,true);
+    dc.setUint16(10,0,true);
+    dc.setUint16(12,0,true);
+    dc.setUint16(14,33,true);
+    dc.setUint32(16,crc,true);
+    dc.setUint32(20,data.length,true);
+    dc.setUint32(24,data.length,true);
+    dc.setUint16(28,name.length,true);
+    dc.setUint16(30,0,true);
+    dc.setUint16(32,0,true);
+    dc.setUint16(34,0,true);
+    dc.setUint16(36,0,true);
+    dc.setUint32(38,0,true);
+    dc.setUint32(42,off,true);
+    cd.set(name,46);
+    central.push(cd);
+    off+=lh.length+data.length;
+  });
+  let cdSize=0;central.forEach(c=>cdSize+=c.length);
+  const eo=new Uint8Array(22);
+  const de=new DataView(eo.buffer);
+  de.setUint32(0,0x06054b50,true);
+  de.setUint16(8,entries.length,true);
+  de.setUint16(10,entries.length,true);
+  de.setUint32(12,cdSize,true);
+  de.setUint32(16,off,true);
+  de.setUint16(20,0,true);
+  const all=chunks.concat(central).concat([eo]);
+  let total=0;all.forEach(a=>total+=a.length);
+  const out=new Uint8Array(total);
+  let p=0;all.forEach(a=>{out.set(a,p);p+=a.length;});
+  return out;
+}
+
+function colLetter(i){let s='';i+=1;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26);}return s;}
+function xmlEsc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+const XLSX_CT='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'+
+'<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'+
+'<Default Extension="xml" ContentType="application/xml"/>'+
+'<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'+
+'<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'+
+'<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>';
+const XLSX_RELS='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+const XLSX_WB='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'+
+'<sheets><sheet name="各省当日新增销量" sheetId="1" r:id="rId1"/></sheets></workbook>';
+const XLSX_WBRELS='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+
+'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>'+
+'<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';
+const XLSX_ST='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'+
+'<fonts count="2"><font><sz val="11"/><name val="Microsoft YaHei"/></font><font><b/><sz val="11"/><name val="Microsoft YaHei"/></font></fonts>'+
+'<fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>'+
+'<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>'+
+'<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'+
+'<cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'+
+'<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/></cellXfs>'+
+'<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+
+function downloadXLSX(){
+  const vis=visibleDates();
+  const dg=sortedProvinces();
+  const nat=D.new['全国'];
+  const enc=new TextEncoder();
+
+  const rows=[];
+  rows.push([{t:'s',v:'省份',s:1}].concat(vis.map(o=>({t:'s',v:o.date,s:1}))));
+  rows.push([{t:'s',v:'全国',s:1}].concat(vis.map(o=>{
+    const v=nat[o.idx];return isNull(v)?null:{t:'n',v:v,s:1};
+  })));
+  dg.provs.forEach(p=>{
+    const r=[{t:'s',v:p,s:0}];
+    vis.forEach(o=>{
+      const v=D.new[p]?D.new[p][o.idx]:null;
+      r.push(isNull(v)?null:{t:'n',v:v,s:0});
+    });
+    rows.push(r);
+  });
+
+  let sx='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'+
+    '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'+
+    '<sheetViews><sheetView workbookViewId="0"><pane xSplit="1" ySplit="1" topLeftCell="B2" activePane="bottomRight" state="frozen"/></sheetView></sheetViews>'+
+    '<cols><col min="1" max="1" width="14" customWidth="1"/>'+
+    '<col min="2" max="40" width="13" customWidth="1"/></cols><sheetData>';
+  rows.forEach((r,ri)=>{
+    sx+='<row r="'+(ri+1)+'">';
+    r.forEach((c,ci)=>{
+      if(!c)return;
+      const ref=colLetter(ci)+(ri+1);
+      if(c.t==='s')sx+='<c r="'+ref+'" t="inlineStr" s="'+c.s+'"><is><t>'+xmlEsc(c.v)+'</t></is></c>';
+      else sx+='<c r="'+ref+'" s="'+c.s+'"><v>'+c.v+'</v></c>';
+    });
+    sx+='</row>';
+  });
+  sx+='</sheetData></worksheet>';
+
+  const zip=zipStore([
+    {name:'[Content_Types].xml',data:enc.encode(XLSX_CT)},
+    {name:'_rels/.rels',data:enc.encode(XLSX_RELS)},
+    {name:'xl/workbook.xml',data:enc.encode(XLSX_WB)},
+    {name:'xl/_rels/workbook.xml.rels',data:enc.encode(XLSX_WBRELS)},
+    {name:'xl/worksheets/sheet1.xml',data:enc.encode(sx)},
+    {name:'xl/styles.xml',data:enc.encode(XLSX_ST)},
+  ]);
+  const blob=new Blob([zip],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  const a=document.createElement('a');
+  const start=vis.length?vis[0].date:'', end=vis.length?vis[vis.length-1].date:'';
+  a.href=URL.createObjectURL(blob);
+  a.download='各省当日新增销量_'+start+'~'+end+'.xlsx';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+// ===== Init =====
+renderMetrics();
+renderChart();
+renderTable();
+</script>
+</body>
+</html>
