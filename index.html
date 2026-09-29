@@ -292,6 +292,12 @@ td.dim{color:rgba(160,180,220,0.35)}
 #dyn3-table thead th.dyn3-th-base{color:#7ee3ff;min-width:110px}
 #dyn3-table thead th.dyn3-th-base .sub{display:block;font-size:0.7rem;font-weight:400;color:rgba(126,227,255,0.6);margin-top:2px}
 #dyn3-table tbody td.dyn3-base{color:#7ee3ff;font-weight:600}
+#dyn3-table thead th.dyn3-th-win .sub{display:block;font-size:0.7rem;font-weight:400;color:rgba(160,180,220,0.45);margin-top:2px}
+#dyn3-table thead th.dyn3-th-latest{color:#ffa726}
+#dyn3-table thead th.dyn3-th-latest .sub{color:rgba(255,167,38,0.75)}
+#dyn3-table tbody td .sub{display:block;font-size:0.75rem;margin-top:1px}
+#dyn3-table tbody td.dyn3-cell-latest{background:rgba(255,167,38,0.08)}
+#dyn3-table tbody td .dyn3-num{font-weight:600}
 
 /* ===== Footer ===== */
 .footer{
@@ -317,7 +323,6 @@ td.dim{color:rgba(160,180,220,0.35)}
   .container{padding:1rem 0.75rem}
 }
 </style>
-<!-- DYN3_SKIP_OVERRIDE=1 -->
 </head>
 <body>
 <div class="app">
@@ -385,7 +390,7 @@ td.dim{color:rgba(160,180,220,0.35)}
 
 <script>
 // ===== Embedded Data =====
-const D = {"meta":{"title":"金融分期政策调整后  终端合约销量专项日度监控","subtitle":"DAILY MONITORING OF TERMINAL CONTRACT SALES","generated_at":"2026-09-28 15:14:11","date_start":"2026-09-24","date_end":"2026-09-27","cutoff":{"2026-09-23":"2026-09-23","2026-09-24":"2026-09-24","2026-09-25":"2026-09-25","2026-09-26":"2026-09-26","2026-09-27":"2026-09-27"},"unit":"笔","province_count":31},"dates":["2026-09-23","2026-09-24","2026-09-25","2026-09-26","2026-09-27"],"provinces":["全国","北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","山东","河南","上海","江苏","云南","四川","宁夏","安徽","广东","广西","新疆","江西","浙江","海南","湖北","湖南","甘肃","福建","西藏","贵州","重庆","陕西","青海"],"cum":{"全国":[251674,267179,274350,281489,288808],"北京":[8629,8825,9092,9563,10055],"天津":[3224,3395,3527,3646,3735],"河北":[10872,11600,11784,12031,12306],"山西":[3647,3805,3842,3915,4002],"内蒙古":[9376,10053,10380,10784,11210],"辽宁":[19270,19785,20705,21585,22558],"吉林":[11935,12714,13348,13758,14186],"黑龙江":[6079,6494,6696,6924,7160],"山东":[44006,46408,46770,47693,48943],"河南":[23083,24416,24498,24580,24616],"上海":[13341,13811,14119,14417,14752],"江苏":[10754,11185,11394,11585,11795],"云南":[1966,2129,2162,2196,2250],"四川":[3561,3738,3738,3738,3738],"宁夏":[1514,1735,1798,1891,1974],"安徽":[2006,2142,2177,2195,2209],"广东":[19363,20503,22843,24524,26030],"广西":[2000,2132,2230,2332,2430],"新疆":[1548,1693,1829,1981,2076],"江西":[5783,6440,6497,6516,6546],"浙江":[4070,4317,4492,4657,4823],"海南":[1112,1167,1504,1801,1833],"湖北":[16603,18008,18033,18046,18094],"湖南":[17033,18383,18384,18393,18448],"甘肃":[587,620,653,675,690],"福建":[3840,4733,4824,4927,5137],"西藏":[38,38,39,39,40],"贵州":[1572,1693,1718,1741,1765],"重庆":[3011,3188,3213,3263,3286],"陕西":[1416,1558,1581,1600,1621],"青海":[435,471,480,493,500]},"new":{"全国":[null,15505,7171,7139,7319],"北京":[null,196,267,471,492],"天津":[null,171,132,119,89],"河北":[null,728,184,247,275],"山西":[null,158,37,73,87],"内蒙古":[null,677,327,404,426],"辽宁":[null,515,920,880,973],"吉林":[null,779,634,410,428],"黑龙江":[null,415,202,228,236],"山东":[null,2402,362,923,1250],"河南":[null,1333,82,82,36],"上海":[null,470,308,298,335],"江苏":[null,431,209,191,210],"云南":[null,163,33,34,54],"四川":[null,177,0,0,0],"宁夏":[null,221,63,93,83],"安徽":[null,136,35,18,14],"广东":[null,1140,2340,1681,1506],"广西":[null,132,98,102,98],"新疆":[null,145,136,152,95],"江西":[null,657,57,19,30],"浙江":[null,247,175,165,166],"海南":[null,55,337,297,32],"湖北":[null,1405,25,13,48],"湖南":[null,1350,1,9,55],"甘肃":[null,33,33,22,15],"福建":[null,893,91,103,210],"西藏":[null,0,1,0,1],"贵州":[null,121,25,23,24],"重庆":[null,177,25,50,23],"陕西":[null,142,23,19,21],"青海":[null,36,9,13,7]},"dyn3":{"window_days":3,"base_skip":0,"skip_override":true,"base":{"start":"2026-09-24","end":"2026-09-26","days":["2026-09-24","2026-09-25","2026-09-26"],"cross_month":false},"windows":[{"start":"2026-09-25","end":"2026-09-27","days":["2026-09-25","2026-09-26","2026-09-27"],"complete":true,"missing":[],"cross_month":false},{"start":"2026-09-26","end":"2026-09-28","days":["2026-09-26","2026-09-27","2026-09-28"],"complete":false,"missing":["2026-09-28"],"cross_month":false}],"rows":{"全国":{"base_avg":9938.3,"base_ok":true,"growth":[-27.5]},"北京":{"base_avg":311.3,"base_ok":true,"growth":[31.7]},"天津":{"base_avg":140.7,"base_ok":true,"growth":[-19.4]},"河北":{"base_avg":386.3,"base_ok":true,"growth":[-39.1]},"山西":{"base_avg":89.3,"base_ok":true,"growth":[-26.5]},"内蒙古":{"base_avg":469.3,"base_ok":true,"growth":[-17.8]},"辽宁":{"base_avg":771.7,"base_ok":true,"growth":[19.8]},"吉林":{"base_avg":607.7,"base_ok":true,"growth":[-19.3]},"黑龙江":{"base_avg":281.7,"base_ok":true,"growth":[-21.2]},"山东":{"base_avg":1229.0,"base_ok":true,"growth":[-31.2]},"河南":{"base_avg":499.0,"base_ok":true,"growth":[-86.6]},"上海":{"base_avg":358.7,"base_ok":true,"growth":[-12.5]},"江苏":{"base_avg":277.0,"base_ok":true,"growth":[-26.6]},"云南":{"base_avg":76.7,"base_ok":true,"growth":[-47.4]},"四川":{"base_avg":59.0,"base_ok":true,"growth":[-100.0]},"宁夏":{"base_avg":125.7,"base_ok":true,"growth":[-36.6]},"安徽":{"base_avg":63.0,"base_ok":true,"growth":[-64.6]},"广东":{"base_avg":1720.3,"base_ok":true,"growth":[7.1]},"广西":{"base_avg":110.7,"base_ok":true,"growth":[-10.2]},"新疆":{"base_avg":144.3,"base_ok":true,"growth":[-11.5]},"江西":{"base_avg":244.3,"base_ok":true,"growth":[-85.5]},"浙江":{"base_avg":195.7,"base_ok":true,"growth":[-13.8]},"海南":{"base_avg":229.7,"base_ok":true,"growth":[-3.3]},"湖北":{"base_avg":481.0,"base_ok":true,"growth":[-94.0]},"湖南":{"base_avg":453.3,"base_ok":true,"growth":[-95.2]},"甘肃":{"base_avg":29.3,"base_ok":true,"growth":[-20.5]},"福建":{"base_avg":362.3,"base_ok":true,"growth":[-62.8]},"西藏":{"base_avg":0.3,"base_ok":true,"growth":[100.0]},"贵州":{"base_avg":56.3,"base_ok":true,"growth":[-57.4]},"重庆":{"base_avg":84.0,"base_ok":true,"growth":[-61.1]},"陕西":{"base_avg":61.3,"base_ok":true,"growth":[-65.8]},"青海":{"base_avg":19.3,"base_ok":true,"growth":[-50.0]}}}};
+const D = {"meta":{"title":"金融分期政策调整后  终端合约销量专项日度监控","subtitle":"DAILY MONITORING OF TERMINAL CONTRACT SALES","generated_at":"2026-09-29 14:46:31","date_start":"2026-09-24","date_end":"2026-09-28","cutoff":{"2026-09-24":"2026-09-24","2026-09-25":"2026-09-25","2026-09-26":"2026-09-26","2026-09-27":"2026-09-27","2026-09-28":"2026-09-28"},"unit":"笔","province_count":31},"dates":["2026-09-24","2026-09-25","2026-09-26","2026-09-27","2026-09-28"],"provinces":["全国","北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","山东","河南","上海","江苏","云南","四川","宁夏","安徽","广东","广西","新疆","江西","浙江","海南","湖北","湖南","甘肃","福建","西藏","贵州","重庆","陕西","青海"],"cum":{"全国":[267402,274574,281716,289038,298230],"北京":[8882,9149,9622,10115,10506],"天津":[3395,3527,3646,3735,3973],"河北":[11600,11784,12031,12306,12976],"山西":[3811,3849,3922,4009,4096],"内蒙古":[10054,10381,10785,11211,11716],"辽宁":[19785,20705,21585,22558,23272],"吉林":[12714,13348,13758,14186,15312],"黑龙江":[6495,6697,6925,7161,7452],"山东":[46409,46771,47695,48947,50345],"河南":[24416,24498,24580,24616,24722],"上海":[13962,14270,14568,14903,15254],"江苏":[11187,11396,11587,11797,11926],"云南":[2129,2162,2196,2250,2326],"四川":[3738,3738,3738,3738,3738],"宁夏":[1735,1798,1891,1974,2149],"安徽":[2142,2177,2195,2209,2284],"广东":[20503,22843,24524,26030,27347],"广西":[2132,2230,2332,2430,2656],"新疆":[1693,1829,1981,2076,2237],"江西":[6440,6497,6516,6546,6719],"浙江":[4317,4492,4657,4823,4973],"海南":[1167,1504,1801,1833,1866],"湖北":[18008,18033,18046,18094,18127],"湖南":[18384,18385,18394,18449,18559],"甘肃":[621,654,676,691,714],"福建":[4735,4826,4929,5139,5543],"西藏":[38,39,39,40,43],"贵州":[1693,1718,1741,1765,1798],"重庆":[3188,3213,3263,3286,3395],"陕西":[1558,1581,1600,1621,1691],"青海":[471,480,493,500,515]},"new":{"全国":[15566,7209,7176,7377,9271],"北京":[225,292,495,537,452],"天津":[171,132,119,89,238],"河北":[730,184,247,276,671],"山西":[158,39,74,89,87],"内蒙古":[679,328,404,426,507],"辽宁":[521,923,888,976,720],"吉林":[779,634,411,428,1126],"黑龙江":[415,202,228,236,291],"山东":[2406,362,924,1254,1401],"河南":[1335,82,82,36,107],"上海":[473,309,299,337,352],"江苏":[436,210,192,210,129],"云南":[163,33,34,54,76],"四川":[177,0,0,0,0],"宁夏":[221,63,93,83,175],"安徽":[136,35,18,14,75],"广东":[1140,2340,1681,1506,1317],"广西":[132,98,102,98,226],"新疆":[145,136,152,95,161],"江西":[657,57,19,30,173],"浙江":[247,175,165,166,150],"海南":[55,337,297,32,33],"湖北":[1408,30,13,49,36],"湖南":[1354,1,9,55,111],"甘肃":[34,33,22,15,23],"福建":[893,91,103,210,404],"西藏":[0,1,0,1,3],"贵州":[121,25,23,24,33],"重庆":[177,25,50,23,109],"陕西":[142,23,19,21,70],"青海":[36,9,13,7,15]},"dyn3":{"window_days":3,"base_skip":1,"skip_override":false,"base":{"start":"2026-09-25","end":"2026-09-27","days":["2026-09-25","2026-09-26","2026-09-27"],"cross_month":false},"windows":[{"start":"2026-09-26","end":"2026-09-28","days":["2026-09-26","2026-09-27","2026-09-28"],"complete":true,"missing":[],"cross_month":false},{"start":"2026-09-27","end":"2026-09-29","days":["2026-09-27","2026-09-28","2026-09-29"],"complete":false,"missing":["2026-09-29"],"cross_month":false}],"rows":{"全国":{"base_avg":7254.0,"base_ok":true,"growth":[9.5],"win_avg":[7941.3]},"北京":{"base_avg":441.3,"base_ok":true,"growth":[12.1],"win_avg":[494.7]},"天津":{"base_avg":113.3,"base_ok":true,"growth":[31.2],"win_avg":[148.7]},"河北":{"base_avg":235.7,"base_ok":true,"growth":[68.9],"win_avg":[398.0]},"山西":{"base_avg":67.3,"base_ok":true,"growth":[23.8],"win_avg":[83.3]},"内蒙古":{"base_avg":386.0,"base_ok":true,"growth":[15.5],"win_avg":[445.7]},"辽宁":{"base_avg":929.0,"base_ok":true,"growth":[-7.3],"win_avg":[861.3]},"吉林":{"base_avg":491.0,"base_ok":true,"growth":[33.4],"win_avg":[655.0]},"黑龙江":{"base_avg":222.0,"base_ok":true,"growth":[13.4],"win_avg":[251.7]},"山东":{"base_avg":846.7,"base_ok":true,"growth":[40.9],"win_avg":[1193.0]},"河南":{"base_avg":66.7,"base_ok":true,"growth":[12.5],"win_avg":[75.0]},"上海":{"base_avg":315.0,"base_ok":true,"growth":[4.6],"win_avg":[329.3]},"江苏":{"base_avg":204.0,"base_ok":true,"growth":[-13.2],"win_avg":[177.0]},"云南":{"base_avg":40.3,"base_ok":true,"growth":[35.5],"win_avg":[54.7]},"四川":{"base_avg":0.0,"base_ok":false,"growth":[null],"win_avg":[0.0]},"宁夏":{"base_avg":79.7,"base_ok":true,"growth":[46.9],"win_avg":[117.0]},"安徽":{"base_avg":22.3,"base_ok":true,"growth":[59.7],"win_avg":[35.7]},"广东":{"base_avg":1842.3,"base_ok":true,"growth":[-18.5],"win_avg":[1501.3]},"广西":{"base_avg":99.3,"base_ok":true,"growth":[43.0],"win_avg":[142.0]},"新疆":{"base_avg":127.7,"base_ok":true,"growth":[6.5],"win_avg":[136.0]},"江西":{"base_avg":35.3,"base_ok":true,"growth":[109.4],"win_avg":[74.0]},"浙江":{"base_avg":168.7,"base_ok":true,"growth":[-4.9],"win_avg":[160.3]},"海南":{"base_avg":222.0,"base_ok":true,"growth":[-45.6],"win_avg":[120.7]},"湖北":{"base_avg":30.7,"base_ok":true,"growth":[6.5],"win_avg":[32.7]},"湖南":{"base_avg":21.7,"base_ok":true,"growth":[169.2],"win_avg":[58.3]},"甘肃":{"base_avg":23.3,"base_ok":true,"growth":[-14.3],"win_avg":[20.0]},"福建":{"base_avg":134.7,"base_ok":true,"growth":[77.5],"win_avg":[239.0]},"西藏":{"base_avg":0.7,"base_ok":true,"growth":[100.0],"win_avg":[1.3]},"贵州":{"base_avg":24.0,"base_ok":true,"growth":[11.1],"win_avg":[26.7]},"重庆":{"base_avg":32.7,"base_ok":true,"growth":[85.7],"win_avg":[60.7]},"陕西":{"base_avg":21.0,"base_ok":true,"growth":[74.6],"win_avg":[36.7]},"青海":{"base_avg":9.7,"base_ok":true,"growth":[20.7],"win_avg":[11.7]}}}};
 
 // ===== Formatting =====
 function isNull(v){return v===null||v===undefined||(typeof v==='number'&&isNaN(v));}
@@ -760,10 +765,14 @@ function renderDyn3(){
   if(!m.ok){panel.style.display='none';return;}
   const d3=m.d3, rows=d3.rows;
 
-  // 表头：省份 ｜ 基期日均 ｜ 各完成窗增幅
+  // 表头：省份 ｜ 基期日均 ｜ 各完成窗（日均数量；最新窗附增幅并高亮）
   let html='<thead><tr><th>省份</th>';
   html+='<th class="dyn3-th-base">基期日均<span class="sub">'+d3.base.start.slice(5)+'～'+d3.base.end.slice(5)+'</span></th>';
-  m.wins.forEach(w=>{html+='<th>'+w.start.slice(5)+'~'+w.end.slice(5)+(w.cross_month?'﹡':'')+'</th>';});
+  m.wins.forEach((w,i)=>{
+    const lt=i===m.lastIdx?' dyn3-th-latest':'';
+    const sub='日均'+(i===m.lastIdx?' · 增幅':'');
+    html+='<th class="dyn3-th-win'+lt+'">'+w.start.slice(5)+'~'+w.end.slice(5)+(w.cross_month?'﹡':'')+'<span class="sub">'+sub+'</span></th>';
+  });
   html+='</tr></thead><tbody>';
 
   function cellBase(p){
@@ -771,22 +780,31 @@ function renderDyn3(){
     if(!r||isNull(r.base_avg))return'<td class="dyn3-base dim">--</td>';
     return'<td class="dyn3-base" title="精确值 '+r.base_avg.toFixed(1)+'">'+fmtInt(r.base_avg)+'</td>';
   }
-  function cellGrow(p,i){
+  // 窗口单元格：主行 = 该窗3日日均数量；仅最新完成窗附副行增幅
+  function cellWin(p,i){
     const r=rows[p];
     if(!r)return'<td class="dim">--</td>';
-    return'<td>'+fmtPct(r.growth[i])+'</td>';
+    const cl=i===m.lastIdx?' class="dyn3-cell-latest"':'';
+    if(!r.win_avg||r.win_avg.length<=i){
+      // 兼容旧数据（无 win_avg 字段）：退回仅增幅渲染
+      return'<td'+cl+'>'+fmtPct(r.growth[i])+'</td>';
+    }
+    if(isNull(r.win_avg[i]))return'<td'+cl+'><span class="dim">--</span></td>';
+    const numHtml='<span class="dyn3-num" title="精确值 '+r.win_avg[i].toFixed(1)+'">'+fmtInt(r.win_avg[i])+'</span>';
+    const subHtml=i===m.lastIdx?'<span class="sub">'+fmtPct(r.growth[i])+'</span>':'';
+    return'<td'+cl+'>'+numHtml+subHtml+'</td>';
   }
 
   // 全国行置顶
   html+='<tr class="national-row"><td class="prov">全国</td>'+cellBase('全国');
-  m.wins.forEach((w,i)=>{html+=cellGrow('全国',i);});
+  m.wins.forEach((w,i)=>{html+=cellWin('全国',i);});
   html+='</tr>';
 
   // 省行（按排序），Top3 金银铜
   m.provs.forEach((p,i)=>{
     const cls=i===0?'top-3 top-1':i===1?'top-3 top-2':i===2?'top-3 top-3':'';
     html+='<tr class="'+cls+'"><td class="prov">'+p+'</td>'+cellBase(p);
-    m.wins.forEach((w,wi)=>{html+=cellGrow(p,wi);});
+    m.wins.forEach((w,wi)=>{html+=cellWin(p,wi);});
     html+='</tr>';
   });
   html+='</tbody>';
@@ -798,7 +816,7 @@ function renderDyn3(){
     const have=m.pending.days.filter(dd=>m.pending.missing.indexOf(dd)<0);
     st+='<div class="dyn3-pending">对比窗口 <b>'+m.pending.start+' ~ '+m.pending.end+'</b> 数据待齐（已有 '+have.length+'/3 天：'+have.join('、')+'，待 '+m.pending.missing.join('、')+' 到来后自动成列）</div>';
   }
-  st+='<div class="dyn3-info">基期 = 有效日序列第'+(d3.base_skip+1)+'~'+(d3.base_skip+3)+'天（固定不动）｜ 窗口 = 3日滚动，每齐一天整体右移 ｜ 单元格 = 窗口日均 vs 基期日均的增幅（涨红 ▲ / 跌绿 ▼）</div>';
+  st+='<div class="dyn3-info">基期 = 有效日序列第'+(d3.base_skip+1)+'~'+(d3.base_skip+3)+'天（固定不动）｜ 窗口 = 3日滚动，每齐一天整体右移 ｜ 单元格 = 窗口3日日均新增（笔）；仅最新窗列附 vs 基期日均的增幅（涨红 ▲ / 跌绿 ▼）</div>';
   document.getElementById('dyn3-status').innerHTML=st;
 
   // 排序说明
